@@ -1,0 +1,13 @@
+{
+  "name": "javascript-data-structures",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Graham Perich",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0"
+  }
+}
