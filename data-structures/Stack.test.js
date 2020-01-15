@@ -1,4 +1,4 @@
-const Stack = require('./stack.js')
+const Stack = require('./Stack.js')
 
 function makePancakeStack() {
   const pancakes = new Stack()
