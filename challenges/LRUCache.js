@@ -1,0 +1,67 @@
+// leetcode difficulty: medium
+// LRU is the acronym of Least Recently Used cache
+
+// Design and implement a data structure for Least Recently Used (LRU) cache. It should support the following operations: get and put.
+
+// get(key) - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.
+// put(key, value) - Set or insert the value if the key is not already present. When the cache reached its capacity, it should invalidate the least recently used item before inserting a new item.
+
+// The cache is initialized with a positive capacity.
+
+// Follow up:
+// Could you do both operations in O(1) time complexity?
+
+// Example:
+// LRUCache cache = new LRUCache( 2 /* capacity */ );
+// cache.put(1, 1);
+// cache.put(2, 2);
+// cache.get(1);       // returns 1
+// cache.put(3, 3);    // evicts key 2
+// cache.get(2);       // returns -1 (not found)
+// cache.put(4, 4);    // evicts key 1
+// cache.get(1);       // returns -1 (not found)
+// cache.get(3);       // returns 3
+// cache.get(4);       // returns 4
+
+const DoublyLinkedList = require('../data-structures/DoublyLinkedList')
+
+/**
+ * @param {number} capacity
+ */
+var LRUCache = function(capacity) {
+  this.size = capacity
+  this.map = {}
+  this.list = new DoublyLinkedList()
+}
+
+/**
+ * @param {number} key
+ * @return {number}
+ */
+LRUCache.prototype.get = function(key) {
+  const node = this.map[key]
+  if (!node) return null
+
+  const removedNode = this.list.remove(node)
+  const prevHead = this.list.head
+  removedNode.next = prevHead
+  this.list.head = removedNode
+
+  return node.value
+}
+
+/**
+ * @param {number} key
+ * @param {number} value
+ * @return {void}
+ */
+LRUCache.prototype.put = function(key, value) {
+  if (this.list.size === capacity) {
+    this.list.removeTail()
+  }
+
+  const node = this.list._createNode(value)
+  const prevHead = this.list.head
+  node.next = prevHead
+  this.list.head = node
+}
