@@ -1,10 +1,11 @@
-// generate all permutations of a string
+// generate all permutations of a string with unique characters
 // 'baw' -> 'baw', 'bwa', 'awb', 'abw', 'wab', 'wba'
 
-function printStringPermutations(str) {
+function generateStringPermutations(str) {
+  const permutations = new Set()
   function inner(decisionPool, fragment = '') {
     if (decisionPool.length === 1) {
-      console.log(fragment + decisionPool[0])
+      permutations.add(fragment + decisionPool[0])
       return
     }
     for (let i = 0; i < decisionPool.length; i++) {
@@ -15,6 +16,8 @@ function printStringPermutations(str) {
   }
 
   inner(str.split(''))
+  console.log(permutations.size)
 }
 
-printStringPermutations('baw')
+generateStringPermutations('baw')
+generateStringPermutations('abcdef')
