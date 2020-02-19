@@ -44,7 +44,7 @@ function constantSpaceReverse(list) {
   let prev = node
   let current = prev.next
   let next = current.next
-  list.tail = node
+  prev.next = null
 
   while (current !== null) {
     current.next = prev
@@ -67,5 +67,6 @@ list.addToTail(2)
 list.addToTail(3)
 
 console.log('constant space reversal')
-console.log(list)
-console.log(constantSpaceReverse(list))
+console.log(list.head)
+constantSpaceReverse(list)
+console.log(list.head)
