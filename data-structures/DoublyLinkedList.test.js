@@ -43,8 +43,8 @@ test('if remove() is called on a node in the middle of the list, the list should
   linkedList.remove(thirdToLastNode)
   expect(linkedList.size()).toBe(5)
 
-  node = linkedList.head
-  iterations = 0
+  let node = linkedList.head
+  let iterations = 0
   while (node && node.next) {
     iterations++
     node = node.next
