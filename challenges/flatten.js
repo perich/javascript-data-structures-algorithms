@@ -30,4 +30,24 @@ function flatten(arr) {
   return flattenedArr
 }
 
+function flattenIterative(arr) {
+  const queue = []
+  const flat = []
+  arr.forEach(item => queue.push(item))
+
+  while (queue.length > 0) {
+    const next = queue.shift()
+    if (Array.isArray(next)) {
+      for (let i = next.length - 1; i >= 0; i--) {
+        queue.unshift(next[i])
+      }
+    } else {
+      flat.push(next)
+    }
+  }
+
+  return flat
+}
+
 console.log(flatten(test1))
+console.log(flattenIterative(test1))
