@@ -18,6 +18,12 @@ test('size should be correct', () => {
   expect(bst.size).toBe(10)
 })
 
+test('isValidBST', () => {
+  expect(bst.isValidBST()).toBe(true)
+  bst.head.left = { value: 20, left: null, right: null }
+  expect(bst.isValidBST()).toBe(false)
+})
+
 test('preorder traversal', () => {
   const preorder = []
   function preorderTraverse(node) {
@@ -26,7 +32,6 @@ test('preorder traversal', () => {
     if (node.right) preorderTraverse(node.right)
   }
   preorderTraverse(bst.head)
-  console.log(bst.head.right.value)
   expect(JSON.stringify(preorder)).toBe(JSON.stringify([5, 4, 2, 8, 6, 11, 12, 53, 17, 14]))
 })
 
@@ -38,7 +43,6 @@ test('inorder traversal', () => {
     if (node.right) inorderTraverse(node.right)
   }
   inorderTraverse(bst.head)
-  console.log(bst.head.right.value)
   expect(JSON.stringify(inorder)).toBe(JSON.stringify([2, 4, 5, 6, 8, 11, 12, 14, 17, 53]))
 })
 
@@ -50,6 +54,5 @@ test('postOrder traversal', () => {
     postOrder.push(node.value)
   }
   postOrderTraverse(bst.head)
-  console.log(bst.head.right.value)
   expect(JSON.stringify(postOrder)).toBe(JSON.stringify([2, 4, 6, 14, 17, 53, 12, 11, 8, 5]))
 })
