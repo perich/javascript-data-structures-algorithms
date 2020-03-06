@@ -23,13 +23,64 @@
 // cache.get(3);       // returns 3
 // cache.get(4);       // returns 4
 
-const DoublyLinkedList = require('../data-structures/DoublyLinkedList')
+class DoublyLinkedList {
+  constructor() {
+    this.head = null
+    this.tail = null
+    this.size = 0
+  }
+
+  createNode(key, value) {
+    return { key, value, next: null, prev: null }
+  }
+
+  remove(node) {
+    let current = this.head
+    while (current !== node && current !== null) {
+      current = current.next
+    }
+    const next = current.next
+    const prev = current.prev
+
+    if (next) {
+      next.prev = prev
+    } else {
+      // if there is no next, this was the tail
+      this.tail = prev
+    }
+
+    if (prev) {
+      prev.next = next
+    } else {
+      // if there is no prev, this was the head
+      this.head = next
+    }
+
+    this.size--
+    current.next = null
+    current.prev = null
+    return current
+  }
+
+  addToHead(node) {
+    if (this.head === null) {
+      this.head = node
+      this.tail = node
+    } else {
+      const oldHead = this.head
+      oldHead.prev = node
+      node.next = oldHead
+      this.head = node
+    }
+    this.size++
+  }
+}
 
 /**
  * @param {number} capacity
  */
 var LRUCache = function(capacity) {
-  this.size = capacity
+  this.capacity = capacity
   this.map = {}
   this.list = new DoublyLinkedList()
 }
@@ -42,10 +93,8 @@ LRUCache.prototype.get = function(key) {
   const node = this.map[key]
   if (!node) return null
 
-  const removedNode = this.list.remove(node)
-  const prevHead = this.list.head
-  removedNode.next = prevHead
-  this.list.head = removedNode
+  const accessedNode = this.list.remove(node)
+  this.list.addToHead(accessedNode)
 
   return node.value
 }
@@ -56,12 +105,27 @@ LRUCache.prototype.get = function(key) {
  * @return {void}
  */
 LRUCache.prototype.put = function(key, value) {
-  if (this.list.size === capacity) {
-    this.list.removeTail()
+  if (this.list.size === this.capacity) {
+    const removed = this.list.remove(this.list.tail)
+    delete this.map[removed.key]
   }
 
-  const node = this.list._createNode(value)
-  const prevHead = this.list.head
-  node.next = prevHead
-  this.list.head = node
+  const newNode = this.list.createNode(key, value)
+  this.list.addToHead(newNode)
+  this.map[key] = newNode
 }
+
+const cache = new LRUCache(5)
+
+cache.put('a', 1)
+cache.put('b', 2)
+cache.put('c', 3)
+cache.put('d', 4)
+cache.put('e', 5)
+console.log(cache.get('a')) // should be present
+cache.put('f', 6)
+cache.put('g', 7)
+console.log(cache.get('b')) // should be gone
+console.log(cache.get('a')) // should still be here
+console.log(cache.get('c')) // should be gone
+console.log(cache.get('d')) // should be present
