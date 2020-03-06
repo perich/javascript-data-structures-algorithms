@@ -48,31 +48,25 @@ class BinarySearchTree {
   // runs a check to determine if the binary tree is a _valid_ binary search tree
   isValidBST() {
     // if the output of an inorder traversal is not sorted, then this is not a valid BST
-    const inorder = []
+    let prevValue = Number.NEGATIVE_INFINITY
+    let isValid = true
 
     function traverse(node) {
+      if (!isValid) return
       if (node.left) {
         traverse(node.left)
       }
-      inorder.push(node.value)
+      if (node.value < prevValue) {
+        isValid = false
+      }
+      prevValue = node.value
       if (node.right) {
         traverse(node.right)
       }
     }
 
-    function isSorted(arr) {
-      let curr = arr[0]
-
-      for (let i = 1; i < arr.length; i++) {
-        if (arr[i] < curr) return false
-        curr = arr[i]
-      }
-      return true
-    }
-
     traverse(this.head)
-    console.log(inorder)
-    return isSorted(inorder)
+    return isValid
   }
 }
 
